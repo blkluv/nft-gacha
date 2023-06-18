@@ -14,9 +14,12 @@
     "@emotion/styled": "latest",
     "@mui/icons-material": "latest",
     "@mui/material": "latest",
+    "@rainbow-me/rainbowkit": "^1.0.2",
     "next": "latest",
     "react": "latest",
-    "react-dom": "latest"
+    "react-dom": "latest",
+    "view": "^1.1.1",
+    "wagmi": "^1.2.0"
   },
   "devDependencies": {
     "@types/node": "latest",
