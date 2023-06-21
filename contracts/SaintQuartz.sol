@@ -2,10 +2,12 @@
 pragma solidity ^0.8.17;
 
 import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
+import "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/token/ERC20/ERC20Upgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
+import "@openzeppelin/contracts-upgradeable/security/ReentrancyGuardUpgradeable.sol";
 
-contract SaintQuartz is Initializable, ERC20Upgradeable, OwnableUpgradeable {
+contract SaintQuartz is Initializable, ERC20Upgradeable, UUPSUpgradeable, OwnableUpgradeable, ReentrancyGuardUpgradeable {
     struct SaintQuartzPackage {
         // price as USD, denominated as Gwei
         uint price;
@@ -17,6 +19,8 @@ contract SaintQuartz is Initializable, ERC20Upgradeable, OwnableUpgradeable {
     function initialize() external initializer {
         __ERC20_init("SaintQuartz", "SQ");
         __Ownable_init();
+        __UUPSUpgradeable_init();
+        __ReentrancyGuard_init();
 
         // define Saint Quartz purchase packages
         _sqPackages[0] = SaintQuartzPackage(990000000, 1);
@@ -29,12 +33,15 @@ contract SaintQuartz is Initializable, ERC20Upgradeable, OwnableUpgradeable {
 
     // to change to payable 
     // payable value based on amount * current ether value pulled with price oracle
-    function mint(address to, uint packageIndex) external onlyOwner {
+    function mint(address to, uint packageIndex) external onlyOwner nonReentrant {
         SaintQuartzPackage memory package = _sqPackages[packageIndex];
         _mint(to, package.amount);
     }
 
     function getSqPackages() external view returns (SaintQuartzPackage[6] memory) {
         return _sqPackages;
+    }
+
+    function _authorizeUpgrade(address newImplementation) internal override onlyOwner {
     }
 }
