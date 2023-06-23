@@ -4,13 +4,14 @@ import { AppProps } from 'next/app';
 import { ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import { CacheProvider, EmotionCache } from '@emotion/react';
-import theme from '../src/theme';
-import createEmotionCache from '../src/createEmotionCache';
+import theme from '../src/utils/theme';
+import createEmotionCache from '../src/utils/createEmotionCache';
 import '@rainbow-me/rainbowkit/styles.css';
-import { getDefaultWallets, RainbowKitProvider } from '@rainbow-me/rainbowkit';
+import { getDefaultWallets, RainbowKitProvider, darkTheme } from '@rainbow-me/rainbowkit';
 import { configureChains, createConfig, WagmiConfig } from 'wagmi';
 import { arbitrum, goerli, mainnet, optimism, polygon } from 'wagmi/chains';
 import { publicProvider } from 'wagmi/providers/public';
+import Layout from './_layout';
 
 // Client-side cache, shared for the whole session of the user in the browser.
 const clientSideEmotionCache = createEmotionCache();
@@ -45,6 +46,7 @@ export interface MyAppProps extends AppProps {
 
 export default function MyApp(props: MyAppProps) {
   const { Component, emotionCache = clientSideEmotionCache, pageProps } = props;
+  // console.log({pageProps});
   return (
     <CacheProvider value={emotionCache}>
       <Head>
@@ -54,8 +56,10 @@ export default function MyApp(props: MyAppProps) {
         {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
         <CssBaseline />
         <WagmiConfig config={wagmiConfig}>
-          <RainbowKitProvider chains={chains}>
-            <Component {...pageProps} />
+          <RainbowKitProvider chains={chains} theme={darkTheme()}>
+            <Layout>
+              <Component {...pageProps} />
+            </Layout>
           </RainbowKitProvider>
         </WagmiConfig>
       </ThemeProvider>
