@@ -5,9 +5,10 @@ import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/token/ERC20/ERC20Upgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
+import "@openzeppelin/contracts-upgradeable/security/PausableUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/security/ReentrancyGuardUpgradeable.sol";
 
-contract SaintQuartz is Initializable, ERC20Upgradeable, UUPSUpgradeable, OwnableUpgradeable, ReentrancyGuardUpgradeable {
+contract SaintQuartz is Initializable, ERC20Upgradeable, UUPSUpgradeable, OwnableUpgradeable, PausableUpgradeable, ReentrancyGuardUpgradeable {
     struct SaintQuartzPackage {
         // price as USD, denominated as Gwei
         uint price;
@@ -20,6 +21,7 @@ contract SaintQuartz is Initializable, ERC20Upgradeable, UUPSUpgradeable, Ownabl
         __ERC20_init("SaintQuartz", "SQ");
         __Ownable_init();
         __UUPSUpgradeable_init();
+        __Pausable_init();
         __ReentrancyGuard_init();
 
         // define Saint Quartz purchase packages
@@ -33,13 +35,21 @@ contract SaintQuartz is Initializable, ERC20Upgradeable, UUPSUpgradeable, Ownabl
 
     // to change to payable 
     // payable value based on amount * current ether value pulled with price oracle
-    function mint(address to, uint packageIndex) external onlyOwner nonReentrant {
+    function mint(address to, uint packageIndex) external onlyOwner nonReentrant whenNotPaused() {
         SaintQuartzPackage memory package = _sqPackages[packageIndex];
         _mint(to, package.amount);
     }
 
     function getSqPackages() external view returns (SaintQuartzPackage[6] memory) {
         return _sqPackages;
+    }
+
+    function pauseContract() external onlyOwner {
+        _pause();
+    }
+
+    function unpauseContract() external onlyOwner {
+        _unpause();
     }
 
     function _authorizeUpgrade(address newImplementation) internal override onlyOwner {
