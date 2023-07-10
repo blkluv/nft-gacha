@@ -6,8 +6,8 @@ on a set percentage.
 
 ## Gacha Flow
 
-1. Purchase Saint Quartz(ERC 20) with Ether
-2. Purchase NFT with Saint Quartz
+1. Purchase Saint Quartz(ERC 20) with Ether.
+2. Purchase NFT with Saint Quartz.
     - A single purchase of 1 NFT with 3 Saint Quartz OR
     - A single purchase of 10 NFT with 30 Saint Quartz
 3. NFTs will be minted to user account.
@@ -15,7 +15,9 @@ on a set percentage.
 ## Implementation Breakdown
 
 - ### Saint Quartz
-    In-game currency, implemented as ERC-20 tokens. These will be purchasable with ether in round numbers.
+    - In-game currency, implemented as ERC-20 tokens. These will be purchasable with ether in round numbers.
+    - Non-transferable between users.
+    - Burned on use.
 - ### Servants (Characters)
     Implemented as ERC-1155 rather than ERC-721 as there's no unique copies of each characters. But the amount of each individual characters will depend on the number of players purchasing as well as the dependence on RNG.
 
