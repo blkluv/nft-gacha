@@ -4,6 +4,14 @@ Re-implementation of a mobile game gacha system ([Fate/Grand Order](https://fate
 whereby players attempt to get their favourite characters through the use of a random-number generator(RNG) based 
 on a set percentage.
 
+## Gacha Flow
+
+1. Purchase Saint Quartz(ERC 20) with Ether
+2. Purchase NFT with Saint Quartz
+    - A single purchase of 1 NFT with 3 Saint Quartz OR
+    - A single purchase of 10 NFT with 30 Saint Quartz
+3. NFTs will be minted to user account.
+
 ## Implementation Breakdown
 
 - ### Saint Quartz
@@ -16,3 +24,5 @@ on a set percentage.
     - 5 Star, 1% 
     - 4 Star, 3% 
     - 3 Star, 40% 
+
+## Standards
