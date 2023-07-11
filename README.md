@@ -4,6 +4,11 @@ Re-implementation of a mobile game gacha system ([Fate/Grand Order](https://fate
 whereby players attempt to get their favourite characters through the use of a random-number generator(RNG) based 
 on a set percentage.
 
+## Important Notes
+
+This is more of a proof-of-concept that a Gacha system works on a blockchain. Realistically speaking for this to work
+in an actual real-world game, a more comprehensive assessment of the business model will be required due to the additional cost of gas and the price of ether being added to the equation as well as how does the nature of blockchain operations affect the gameplay loop and the overall gaming experience.
+
 ## Gacha Flow
 
 1. Purchase Saint Quartz(ERC 20) with Ether.
@@ -25,6 +30,6 @@ on a set percentage.
     
     - 5 Star, 1% 
     - 4 Star, 3% 
-    - 3 Star, 40% 
+    - 3 Star, 40%
 
 ## Standards
