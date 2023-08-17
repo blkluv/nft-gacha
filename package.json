@@ -1,7 +1,7 @@
 {
   "name": "fgo-nft-gacha",
   "scripts": {
-    "start": "npx hardhat run --network localhost scripts/run.js",
+    "deploy": "npx hardhat run --network localhost scripts/deploy.ts",
     "lint": "./node_modules/.bin/solhint contracts/**/*.sol --fix",
     "format": "./node_modules/.bin/prettier --write contracts/**/*.sol"
   },

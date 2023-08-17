@@ -25,13 +25,8 @@ contract SaintQuartz is Initializable, ERC20Upgradeable, ERC20BurnableUpgradeabl
     }
 
     SaintQuartzPackage[6] private _sqPackages;
-    
-    /// @custom:oz-upgrades-unsafe-allow constructor
-    constructor() {
-        _disableInitializers();
-    }
 
-    function initialize() initializer public {
+    function initialize() external initializer {
         __ERC20_init("SaintQuartz", "SQ");
         __EIP712_init("SQDomain", "1");
         __ERC20Burnable_init();
