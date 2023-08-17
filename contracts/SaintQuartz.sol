@@ -14,12 +14,12 @@ import "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol";
 contract SaintQuartz is Initializable, ERC20Upgradeable, ERC20BurnableUpgradeable, PausableUpgradeable, ReentrancyGuardUpgradeable, OwnableUpgradeable, EIP712Upgradeable, UUPSUpgradeable {
     struct SaintQuartzPackage {
         // price as USD, denominated as Gwei
-        uint price;
-        uint amount;
+        uint256 price;
+        uint256 amount;
     }
 
     struct SQSigner {
-        uint packageIndex;
+        uint256 packageIndex;
         address user;
         bytes signature;
     }
@@ -49,10 +49,9 @@ contract SaintQuartz is Initializable, ERC20Upgradeable, ERC20BurnableUpgradeabl
 
     function verifySigner(SQSigner calldata sqSigner) public view returns (address signer) {
         bytes32 digest = _hashTypedDataV4(keccak256(abi.encode(
-            "SQSigner(uint packageIndex, address user, bytes signature)",
-            sqSigner.packageIndex,
+            keccak256("SQSigner(address user,uint256 packageIndex)"),
             sqSigner.user,
-            sqSigner.signature
+            sqSigner.packageIndex
         )));
 
         signer = ECDSA.recover(digest, sqSigner.signature);
@@ -69,7 +68,7 @@ contract SaintQuartz is Initializable, ERC20Upgradeable, ERC20BurnableUpgradeabl
     // to change to payable 
     // payable value based on amount * current ether value pulled with price oracle
     function mint(SQSigner calldata sqSigner) public nonReentrant whenNotPaused() {
-        require(owner() == verifySigner(sqSigner), "Invalid signature!");
+        require(msg.sender == verifySigner(sqSigner), "Invalid signature!");
         
         SaintQuartzPackage memory package = _sqPackages[sqSigner.packageIndex];
         _mint(sqSigner.user, package.amount);
