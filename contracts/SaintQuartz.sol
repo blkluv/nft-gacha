@@ -12,6 +12,11 @@ import "@openzeppelin/contracts-upgradeable/utils/cryptography/EIP712Upgradeable
 import "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol";
 
 contract SaintQuartz is Initializable, ERC20Upgradeable, ERC20BurnableUpgradeable, PausableUpgradeable, ReentrancyGuardUpgradeable, OwnableUpgradeable, EIP712Upgradeable, UUPSUpgradeable {
+    SaintQuartzPackage[6] private _sqPackages;
+
+    event Mint(address indexed _to, uint256 _value);
+    event Burn(address indexed _from, uint256 _value);
+
     struct SaintQuartzPackage {
         // price as USD(ether), denominated as Gwei
         uint256 price;
@@ -24,7 +29,6 @@ contract SaintQuartz is Initializable, ERC20Upgradeable, ERC20BurnableUpgradeabl
         bytes signature;
     }
 
-    SaintQuartzPackage[6] private _sqPackages;
 
     function initialize() external initializer {
         __ERC20_init("SaintQuartz", "SQ");
@@ -47,25 +51,7 @@ contract SaintQuartz is Initializable, ERC20Upgradeable, ERC20BurnableUpgradeabl
         return _sqPackages;
     }
 
-    function verifySigner(SQSigner calldata sqSigner) public view returns (address signer) {
-        bytes32 digest = _hashTypedDataV4(keccak256(abi.encode(
-            keccak256("SQSigner(address user,uint256 packageIndex)"),
-            sqSigner.user,
-            sqSigner.packageIndex
-        )));
-
-        signer = ECDSA.recover(digest, sqSigner.signature);
-    }
-
-    function pause() public onlyOwner {
-        _pause();
-    }
-
-    function unpause() public onlyOwner {
-        _unpause();
-    }
-
-    function mint(SQSigner calldata sqSigner) public payable nonReentrant whenNotPaused() {
+    function buySaintQuartz(SQSigner calldata sqSigner) external payable nonReentrant whenNotPaused() {
         require(msg.sender == verifySigner(sqSigner), "Invalid signature!");
         require(msg.value > 0, "Invalid amount!");
         require(sqSigner.packageIndex < _sqPackages.length, "Invalid package!");
@@ -77,12 +63,41 @@ contract SaintQuartz is Initializable, ERC20Upgradeable, ERC20BurnableUpgradeabl
         require(msg.value >= packagePriceInEther, "Invalid amount!");
 
         _mint(sqSigner.user, package.amount);
+
+        emit Mint(msg.sender, package.amount);
+    }
+
+    function useSaintQuartz(address from, uint sqAmount) external nonReentrant whenNotPaused() {
+        require(sqAmount > 0, "Invalid amount!");
+        
+        _approve(from, _msgSender(), sqAmount);
+        burnFrom(from, sqAmount);
+
+        emit Burn(from, sqAmount);
+    }
+
+    function verifySigner(SQSigner calldata sqSigner) public view returns (address signer) {
+        bytes32 digest = _hashTypedDataV4(keccak256(abi.encode(
+            keccak256("SQSigner(address user,uint256 packageIndex)"),
+            sqSigner.user,
+            sqSigner.packageIndex
+        )));
+
+        signer = ECDSA.recover(digest, sqSigner.signature);
     }
 
     // to be pull from chainlink oracle price feed
     function getLatestPrice() public pure returns (int256) {
         int256 mockedPriceUsd = 1500;
         return mockedPriceUsd;
+    }
+
+    function pause() public onlyOwner {
+        _pause();
+    }
+
+    function unpause() public onlyOwner {
+        _unpause();
     }
 
     function _beforeTokenTransfer(address from, address to, uint256 amount)
