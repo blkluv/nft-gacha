@@ -65,12 +65,15 @@ contract SaintQuartz is Initializable, ERC20Upgradeable, ERC20BurnableUpgradeabl
         _unpause();
     }
 
-    // to change to payable 
     // payable value based on amount * current ether value pulled with price oracle
-    function mint(SQSigner calldata sqSigner) public nonReentrant whenNotPaused() {
+    function mint(SQSigner calldata sqSigner) public payable nonReentrant whenNotPaused() {
         require(msg.sender == verifySigner(sqSigner), "Invalid signature!");
+        require(msg.value > 0, "Invalid amount!");
+        require(sqSigner.packageIndex < _sqPackages.length, "Invalid package!");
         
         SaintQuartzPackage memory package = _sqPackages[sqSigner.packageIndex];
+        require(msg.value >= package.price, "Invalid amount!");
+
         _mint(sqSigner.user, package.amount);
     }
 

@@ -27,8 +27,11 @@ describe("Saint Quartz contract", function () {
   });
 
   describe("Minting", function () {
-    async function signTypedData(signer: SignerWithAddress, contractAddress: string, packageIndex: number) {
+    const packageIndex = 2;
+    const packageValue = "11.99";
+    const parsedPackageValue = ethers.utils.parseUnits(packageValue, "gwei");
 
+    async function signTypedData(signer: SignerWithAddress, contractAddress: string, packageIndex: number) {
       const value = {
         user: signer.address,
         packageIndex,
@@ -53,13 +56,12 @@ describe("Saint Quartz contract", function () {
       };
     }
 
-    it("Saint Quartz minted", async function () {
-      const packageIndex = 2;
+    it("Expect Saint Quartz to be minted", async function () {
       const [, user] = await ethers.getSigners();
       const { saintQuartzContract } = await loadFixture(deployFixture);
 
       const signedData = await signTypedData(user, saintQuartzContract.address, packageIndex);
-      await saintQuartzContract.connect(user).mint(signedData);
+      await saintQuartzContract.connect(user).mint(signedData, { value: parsedPackageValue });
 
       const packages = await saintQuartzContract.getSqPackages();
       const balance = await saintQuartzContract.balanceOf(user.address);
@@ -67,15 +69,26 @@ describe("Saint Quartz contract", function () {
       expect(Number(balance)).to.equal(Number(packages[packageIndex].amount));
     });
 
-    it("Not mintable when paused", async function () {
-      const packageIndex = 2;
+    it("Reverted when contract is paused", async function () {
       const [owner, user] = await ethers.getSigners();
       const { saintQuartzContract } = await loadFixture(deployFixture);
 
       const signedData = await signTypedData(user, saintQuartzContract.address, packageIndex);
       await saintQuartzContract.connect(owner).pause();
 
-      expect(saintQuartzContract.connect(user).mint(signedData)).to.be.revertedWith("Pausable: paused");
+      await expect(saintQuartzContract.connect(user).mint(signedData, {value: parsedPackageValue}))
+        .to.be.revertedWith('Pausable: paused');
+    });
+
+    it("Reverted when package index is invalid", async function () {
+      const invalidPackageIndex = 6;
+      const [, user] = await ethers.getSigners();
+      const { saintQuartzContract } = await loadFixture(deployFixture);
+
+      const signedData = await signTypedData(user, saintQuartzContract.address, invalidPackageIndex);
+
+      await expect(saintQuartzContract.connect(user).mint(signedData, {value: parsedPackageValue}))
+        .to.be.revertedWith("Invalid package!");
     });
   });
 });
