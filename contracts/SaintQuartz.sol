@@ -13,7 +13,7 @@ import "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol";
 
 contract SaintQuartz is Initializable, ERC20Upgradeable, ERC20BurnableUpgradeable, PausableUpgradeable, ReentrancyGuardUpgradeable, OwnableUpgradeable, EIP712Upgradeable, UUPSUpgradeable {
     struct SaintQuartzPackage {
-        // price as USD, denominated as Gwei
+        // price as USD(ether), denominated as Gwei
         uint256 price;
         uint256 amount;
     }
@@ -35,12 +35,12 @@ contract SaintQuartz is Initializable, ERC20Upgradeable, ERC20BurnableUpgradeabl
         __UUPSUpgradeable_init();
 
         // define Saint Quartz purchase packages
-        _sqPackages[0] = SaintQuartzPackage(990000000, 1);
-        _sqPackages[1] = SaintQuartzPackage(3990000000, 5);
-        _sqPackages[2] = SaintQuartzPackage(11990000000, 19);
-        _sqPackages[3] = SaintQuartzPackage(23990000000, 41);
-        _sqPackages[4] = SaintQuartzPackage(39990000000, 77);
-        _sqPackages[5] = SaintQuartzPackage(79990000000, 168);
+        _sqPackages[0] = SaintQuartzPackage(10000000000, 1);
+        _sqPackages[1] = SaintQuartzPackage(40000000000, 5);
+        _sqPackages[2] = SaintQuartzPackage(120000000000, 19);
+        _sqPackages[3] = SaintQuartzPackage(240000000000, 41);
+        _sqPackages[4] = SaintQuartzPackage(400000000000, 77);
+        _sqPackages[5] = SaintQuartzPackage(800000000000, 168);
     }
 
     function getSqPackages() external view returns (SaintQuartzPackage[6] memory) {
@@ -65,16 +65,24 @@ contract SaintQuartz is Initializable, ERC20Upgradeable, ERC20BurnableUpgradeabl
         _unpause();
     }
 
-    // payable value based on amount * current ether value pulled with price oracle
     function mint(SQSigner calldata sqSigner) public payable nonReentrant whenNotPaused() {
         require(msg.sender == verifySigner(sqSigner), "Invalid signature!");
         require(msg.value > 0, "Invalid amount!");
         require(sqSigner.packageIndex < _sqPackages.length, "Invalid package!");
-        
+
+        // Calculate USD equivalent in ether
         SaintQuartzPackage memory package = _sqPackages[sqSigner.packageIndex];
-        require(msg.value >= package.price, "Invalid amount!");
+        uint256 ethUnitPrice = uint256(getLatestPrice());
+        uint256 packagePriceInEther = (1 ether / ethUnitPrice) * (package.price / 1e10);
+        require(msg.value >= packagePriceInEther, "Invalid amount!");
 
         _mint(sqSigner.user, package.amount);
+    }
+
+    // to be pull from chainlink oracle price feed
+    function getLatestPrice() public pure returns (int256) {
+        int256 mockedPriceUsd = 1500;
+        return mockedPriceUsd;
     }
 
     function _beforeTokenTransfer(address from, address to, uint256 amount)
@@ -91,3 +99,4 @@ contract SaintQuartz is Initializable, ERC20Upgradeable, ERC20BurnableUpgradeabl
         override
     {}
 }
+    

@@ -28,8 +28,7 @@ describe("Saint Quartz contract", function () {
 
   describe("Minting", function () {
     const packageIndex = 2;
-    const packageValue = "11.99";
-    const parsedPackageValue = ethers.utils.parseUnits(packageValue, "gwei");
+    const parsedPackageValue = ethers.utils.parseUnits("0.1", "ether");
 
     async function signTypedData(signer: SignerWithAddress, contractAddress: string, packageIndex: number) {
       const value = {
