@@ -10,7 +10,10 @@ import { ConnectButton } from '@rainbow-me/rainbowkit';
 import { APP_TITLE } from "../../utils/constants";
 import { bgColorStyle } from "../../utils/styles";
 
-const pages = ['Buy Saint Quartz'];
+const pages = [{
+  label: "Saint Quartz", 
+  link: "/saintquartz"
+}];
 
 function ResponsiveAppBar() {
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
@@ -62,11 +65,12 @@ function ResponsiveAppBar() {
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
             {pages.map((page) => (
               <Button
-                key={page}
+                key={page.label}
                 onClick={handleCloseNavMenu}
                 sx={{ my: 2, color: 'white', display: 'block' }}
+                href={page.link}
               >
-                {page}
+                {page.label}
               </Button>
             ))}
           </Box>
