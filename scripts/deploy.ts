@@ -1,4 +1,5 @@
 import { ethers } from "hardhat";
+import writeAbi from "./writeAbi";
 
 async function main() {
   const SaintQuartz = await ethers.getContractFactory("SaintQuartz");
@@ -6,6 +7,8 @@ async function main() {
   await saintQuartz.deployed();
 
   console.log(`Saint Quartz contract deployed to ${saintQuartz.address}`);
+
+  writeAbi();
 }
 
 main().catch((error) => {
