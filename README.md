@@ -4,6 +4,8 @@ Re-implementation of a mobile game gacha system ([Fate/Grand Order](https://fate
 whereby players attempt to get their favourite characters through the use of a random-number generator(RNG) based 
 on a set percentage.
 
+<img src="cover_image.jpg" alt="cover image" width="600"/>
+
 ## Important Notes
 
 This is more of a proof-of-concept that a Gacha system works on a blockchain. Realistically speaking for this to work

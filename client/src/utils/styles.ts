@@ -21,7 +21,7 @@ export const flexRowStyle = {
 
 export const pageBoxStyle = {
   ...flexColStyle,
-  height: 1000,
+  height: "70vh",
   justifyContent: "flex-start",
   gap: 10,
 };
