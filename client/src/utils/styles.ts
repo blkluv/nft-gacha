@@ -13,6 +13,12 @@ export const flexColStyle = {
   alignItems: "center",
 };
 
+export const flexRowStyle = {
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center",
+};
+
 export const pageBoxStyle = {
   ...flexColStyle,
   height: 1000,

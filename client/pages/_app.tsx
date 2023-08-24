@@ -1,6 +1,6 @@
-import * as React from 'react';
 import Head from 'next/head';
 import { AppProps } from 'next/app';
+import dynamic from "next/dynamic";
 import { ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import { CacheProvider, EmotionCache } from '@emotion/react';
@@ -9,7 +9,7 @@ import createEmotionCache from '../src/utils/createEmotionCache';
 import '@rainbow-me/rainbowkit/styles.css';
 import { getDefaultWallets, RainbowKitProvider, darkTheme } from '@rainbow-me/rainbowkit';
 import { configureChains, createConfig, WagmiConfig } from 'wagmi';
-import { arbitrum, goerli, mainnet, optimism, polygon } from 'wagmi/chains';
+import { arbitrum, goerli, localhost, mainnet, optimism, polygon } from 'wagmi/chains';
 import { publicProvider } from 'wagmi/providers/public';
 import Layout from './_layout';
 
@@ -18,6 +18,7 @@ const clientSideEmotionCache = createEmotionCache();
 
 const { chains, publicClient, webSocketPublicClient } = configureChains(
   [
+    localhost,
     mainnet,
     polygon,
     optimism,
@@ -28,7 +29,7 @@ const { chains, publicClient, webSocketPublicClient } = configureChains(
 );
 
 const { connectors } = getDefaultWallets({
-  appName: 'RainbowKit App',
+  appName: 'FGO Lootbox System',
   projectId: 'YOUR_PROJECT_ID',
   chains,
 });
@@ -44,19 +45,17 @@ export interface MyAppProps extends AppProps {
   emotionCache?: EmotionCache;
 }
 
-export default function MyApp(props: MyAppProps) {
+function MyApp(props: MyAppProps) {
   const { Component, emotionCache = clientSideEmotionCache, pageProps } = props;
-  // console.log({pageProps});
   return (
     <CacheProvider value={emotionCache}>
       <Head>
         <meta name="viewport" content="initial-scale=1, width=device-width" />
       </Head>
       <ThemeProvider theme={theme}>
-        {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
         <CssBaseline />
         <WagmiConfig config={wagmiConfig}>
-          <RainbowKitProvider chains={chains} theme={darkTheme()}>
+          <RainbowKitProvider modalSize="compact" chains={chains} theme={darkTheme()}>
             <Layout>
               <Component {...pageProps} />
             </Layout>
@@ -66,3 +65,7 @@ export default function MyApp(props: MyAppProps) {
     </CacheProvider>
   );
 }
+
+export default dynamic(() => Promise.resolve(MyApp), {
+  ssr: false,
+});
