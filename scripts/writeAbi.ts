@@ -17,4 +17,4 @@ async function writeAbi() {
   }
 }
 
-export default writeAbi;
+module.exports = writeAbi;

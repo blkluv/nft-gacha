@@ -1,5 +1,6 @@
 import { HardhatUserConfig } from "hardhat/config";
 import "@nomicfoundation/hardhat-toolbox";
+require('@openzeppelin/hardhat-upgrades');
 require('dotenv').config();
 
 const config: HardhatUserConfig = {
@@ -8,14 +9,11 @@ const config: HardhatUserConfig = {
     hardhat: {
       chainId: 1337,
     },
-    // goerli: {
-    //   url: GOERLI_API,
-    //   accounts: [ACCOUNT]
-    // }
   },
-  // etherscan: {
-  //   apiKey: ETHERSCAN_API_KEY
-  // }
+  typechain: {
+    outDir: "./client/typechain",
+    target: "ethers-v5",
+  },
 };
 
 export default config;
