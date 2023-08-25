@@ -4,49 +4,24 @@ import dynamic from "next/dynamic";
 import { ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import { CacheProvider, EmotionCache } from '@emotion/react';
-import theme from '../src/utils/theme';
 import createEmotionCache from '../src/utils/createEmotionCache';
 import '@rainbow-me/rainbowkit/styles.css';
-import { getDefaultWallets, RainbowKitProvider, darkTheme } from '@rainbow-me/rainbowkit';
-import { configureChains, createConfig, WagmiConfig } from 'wagmi';
-import { arbitrum, goerli, localhost, mainnet, optimism, polygon } from 'wagmi/chains';
-import { publicProvider } from 'wagmi/providers/public';
+import { RainbowKitProvider, darkTheme } from '@rainbow-me/rainbowkit';
+import { WagmiConfig } from 'wagmi';
+import { useWallet } from "../hooks/useWallet";
+import theme from '../src/utils/theme';
 import Layout from './_layout';
-
-// Client-side cache, shared for the whole session of the user in the browser.
-const clientSideEmotionCache = createEmotionCache();
-
-const { chains, publicClient, webSocketPublicClient } = configureChains(
-  [
-    localhost,
-    mainnet,
-    polygon,
-    optimism,
-    arbitrum,
-    ...(process.env.NEXT_PUBLIC_ENABLE_TESTNETS === 'true' ? [goerli] : []),
-  ],
-  [publicProvider()]
-);
-
-const { connectors } = getDefaultWallets({
-  appName: 'FGO Lootbox System',
-  projectId: 'YOUR_PROJECT_ID',
-  chains,
-});
-
-const wagmiConfig = createConfig({
-  autoConnect: true,
-  connectors,
-  publicClient,
-  webSocketPublicClient,
-});
 
 export interface MyAppProps extends AppProps {
   emotionCache?: EmotionCache;
 }
 
 function MyApp(props: MyAppProps) {
+  // Client-side cache, shared for the whole session of the user in the browser.
+  const clientSideEmotionCache = createEmotionCache();
   const { Component, emotionCache = clientSideEmotionCache, pageProps } = props;
+  const { chains, wagmiConfig } = useWallet();
+
   return (
     <CacheProvider value={emotionCache}>
       <Head>
