@@ -10,7 +10,7 @@ async function writeAbi() {
       const rawData = await fs.readFile(file, "utf8");
       const { abi } = JSON.parse(rawData);
       const data = `export const ${name}Abi = ` + JSON.stringify(abi);
-      await fs.writeFile(`./client/abis/${name}.abi.js`, data);
+      await fs.writeFile(`./client/src/abis/${name}.abi.js`, data);
     });
   } catch (error) {
     console.error(error);
