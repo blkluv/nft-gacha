@@ -12,9 +12,11 @@ export const useSaintQuartz = () => {
 
   const fetchSqAmount = async () => {
     try {
-      const signer = await getSigner();
-      const amount = await saintQuartzContract.connect(signer).getSaintQuartzBalance();
-      return parseInt(amount);
+      if(saintQuartzContract) {
+        const signer = await getSigner();
+        const amount = await saintQuartzContract.connect(signer).getSaintQuartzBalance();
+        return parseInt(amount);
+      }
     } catch (error) {
       console.error(error);
     }

@@ -10,7 +10,7 @@ import AdbIcon from "@mui/icons-material/Adb";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { APP_TITLE } from "../../utils/constants";
 import { useAccount } from "wagmi";
-import { useSaintQuartz } from "../../../hooks/useSaintQuartz";
+import { useSaintQuartz } from "../../hooks/useSaintQuartz";
 import { bgColorStyle, flexRowStyle } from "../../utils/styles";
 
 const sqDisplayStyle = {
@@ -56,7 +56,7 @@ function Navbar() {
     if(isConnected) {
       getSqAmount();
     }
-  }, [isConnected]);
+  }, [isConnected, sqAmount]);
 
   return (
     <AppBar position="static" sx={bgColorStyle}>

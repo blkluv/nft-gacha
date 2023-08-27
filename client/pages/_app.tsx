@@ -8,7 +8,7 @@ import createEmotionCache from '../src/utils/createEmotionCache';
 import '@rainbow-me/rainbowkit/styles.css';
 import { RainbowKitProvider, darkTheme } from '@rainbow-me/rainbowkit';
 import { WagmiConfig } from 'wagmi';
-import { useWalletConfig } from "../hooks/useWalletConfig";
+import { useWalletConfig } from "../src/hooks/useWalletConfig";
 import theme from '../src/utils/theme';
 import Layout from './_layout';
 
