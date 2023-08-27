@@ -1,4 +1,4 @@
-# Metana Capstone Project 1 - Fate/Grand Order NFT Gacha
+# (Work-in-Progress) Metana Capstone Project 1 - Fate/Grand Order NFT Gacha
 
 Re-implementation of a mobile game gacha system ([Fate/Grand Order](https://fate-go.us)) as a NFT gacha system. A gacha system (loot-box system) is a system 
 whereby players attempt to get their favourite characters through the use of a random-number generator(RNG) based 
