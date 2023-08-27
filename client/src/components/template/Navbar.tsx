@@ -1,4 +1,4 @@
-import * as React from "react";
+import { useState, useEffect } from "react";
 import Image from "next/image";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
@@ -9,15 +9,22 @@ import Button from "@mui/material/Button";
 import AdbIcon from "@mui/icons-material/Adb";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { APP_TITLE } from "../../utils/constants";
-import { bgColorStyle, flexRowStyle } from "../../utils/styles";
-
 import { useAccount } from "wagmi";
+import { useSaintQuartz } from "../../../hooks/useSaintQuartz";
+import { bgColorStyle, flexRowStyle } from "../../utils/styles";
 
 const sqDisplayStyle = {
   height: 40,
   backgroundColor: "white !important",
   color: "#34495E !important",
   fontSize: 20,
+};
+
+const typographyStyle = {
+  mr: 2,
+  fontWeight: 700,
+  color: "inherit",
+  textDecoration: "none",
 };
 
 const pages = [
@@ -28,15 +35,28 @@ const pages = [
 ];
 
 function Navbar() {
-  const { isConnected } = useAccount();
-
-  const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(
+  const [sqAmount, setSqAmount] = useState(0); 
+  const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(
     null
   );
+
+  const { isConnected } = useAccount();
+  const { fetchSqAmount } = useSaintQuartz();
 
   const handleCloseNavMenu = () => {
     setAnchorElNav(null);
   };
+
+  const getSqAmount = async () => {
+        const amount = await fetchSqAmount();
+        setSqAmount(amount!);
+  }
+
+  useEffect(() => {
+    if(isConnected) {
+      getSqAmount();
+    }
+  }, [isConnected]);
 
   return (
     <AppBar position="static" sx={bgColorStyle}>
@@ -49,12 +69,9 @@ function Navbar() {
             component="a"
             href="/"
             sx={{
-              mr: 2,
+              ...typographyStyle,
               display: { xs: "none", md: "flex" },
               fontFamily: "ubuntu",
-              fontWeight: 700,
-              color: "inherit",
-              textDecoration: "none",
             }}
           >
             {APP_TITLE}
@@ -66,14 +83,11 @@ function Navbar() {
             component="a"
             href=""
             sx={{
-              mr: 2,
+              ...typographyStyle,
               display: { xs: "flex", md: "none" },
               flexGrow: 1,
               fontFamily: "monospace",
-              fontWeight: 700,
               letterSpacing: ".3rem",
-              color: "inherit",
-              textDecoration: "none",
             }}
           >
             LOGO
@@ -101,7 +115,7 @@ function Navbar() {
                     height={35}
                     alt="Saint Quartz"
                   />{" "}
-                  &nbsp; 20
+                  &nbsp; {sqAmount}
                 </Button>
               </Box>
             )}

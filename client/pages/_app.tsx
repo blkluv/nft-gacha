@@ -8,7 +8,7 @@ import createEmotionCache from '../src/utils/createEmotionCache';
 import '@rainbow-me/rainbowkit/styles.css';
 import { RainbowKitProvider, darkTheme } from '@rainbow-me/rainbowkit';
 import { WagmiConfig } from 'wagmi';
-import { useWallet } from "../hooks/useWallet";
+import { useWalletConfig } from "../hooks/useWalletConfig";
 import theme from '../src/utils/theme';
 import Layout from './_layout';
 
@@ -20,7 +20,7 @@ function MyApp(props: MyAppProps) {
   // Client-side cache, shared for the whole session of the user in the browser.
   const clientSideEmotionCache = createEmotionCache();
   const { Component, emotionCache = clientSideEmotionCache, pageProps } = props;
-  const { chains, wagmiConfig } = useWallet();
+  const { chains, wagmiConfig } = useWalletConfig();
 
   return (
     <CacheProvider value={emotionCache}>

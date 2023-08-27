@@ -4,7 +4,7 @@ import { configureChains, createConfig } from "wagmi";
 import { sepolia, localhost, mainnet, polygon } from "wagmi/chains";
 import { publicProvider } from "wagmi/providers/public";
 
-export const useWallet = () => {
+export const useWalletConfig = () => {
   const { chains, publicClient, webSocketPublicClient } = configureChains(
     [
       localhost,

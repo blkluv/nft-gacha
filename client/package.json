@@ -15,6 +15,7 @@
     "@mui/icons-material": "latest",
     "@mui/material": "latest",
     "@rainbow-me/rainbowkit": "^1.0.2",
+    "ethers": "^6.7.1",
     "next": "latest",
     "react": "latest",
     "react-dom": "latest",
