@@ -29,7 +29,6 @@ contract SaintQuartz is Initializable, ERC20Upgradeable, ERC20BurnableUpgradeabl
         bytes signature;
     }
 
-
     function initialize() external initializer {
         __ERC20_init("SaintQuartz", "SQ");
         __EIP712_init("SQDomain", "1");

@@ -1,7 +1,6 @@
-import { loadFixture } from "@nomicfoundation/hardhat-network-helpers";
-import { SignerWithAddress } from "@nomiclabs/hardhat-ethers/signers";
-import { expect } from "chai";
-import { ethers } from "hardhat";
+const { loadFixture } = require("@nomicfoundation/hardhat-network-helpers");
+const { expect } = require("chai");
+const { ethers } = require("hardhat");
 
 describe("Saint Quartz contract", () => {
   const packagePriceEth = ethers.utils.parseUnits("0.1", "ether");
@@ -20,7 +19,7 @@ describe("Saint Quartz contract", () => {
     return { saintQuartzContract, servantsContract };
   }
 
-  async function signTypedData(signer: SignerWithAddress, contractAddress: string, packageIndex: number) {
+  async function signTypedData(signer, contractAddress, packageIndex) {
     const value = {
       user: signer.address,
       packageIndex,

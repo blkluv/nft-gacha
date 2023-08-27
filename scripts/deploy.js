@@ -1,8 +1,7 @@
-const {ethers, upgrades} = require("hardhat");
-const writeAbi = require("./writeAbi.ts");
+const { ethers, upgrades } = require("hardhat");
+const writeAbi = require("./writeAbi.js");
 
 async function main() {
-
   const SaintQuartz = await ethers.getContractFactory("SaintQuartz");
   const saintQuartz = await upgrades.deployProxy(SaintQuartz, {kind: "uups"});
   await saintQuartz.deployed();
