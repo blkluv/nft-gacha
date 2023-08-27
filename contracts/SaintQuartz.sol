@@ -76,6 +76,10 @@ contract SaintQuartz is Initializable, ERC20Upgradeable, ERC20BurnableUpgradeabl
         emit Burn(from, sqAmount);
     }
 
+     function getSaintQuartzBalance() external view returns (uint256 balance) {
+        balance = balanceOf(msg.sender);
+    }
+
     function verifySigner(SQSigner calldata sqSigner) public view returns (address signer) {
         bytes32 digest = _hashTypedDataV4(keccak256(abi.encode(
             keccak256("SQSigner(address user,uint256 packageIndex)"),
