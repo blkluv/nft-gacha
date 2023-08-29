@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import Image from "next/image";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
@@ -8,9 +8,10 @@ import Container from "@mui/material/Container";
 import Button from "@mui/material/Button";
 import AdbIcon from "@mui/icons-material/Adb";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
-import { APP_TITLE } from "../../utils/constants";
+import { NetworkContext } from "../../utils/contexts";
 import { useAccount } from "wagmi";
 import { useSaintQuartz } from "../../hooks/useSaintQuartz";
+import { APP_TITLE } from "../../utils/constants";
 import { bgColorStyle, flexRowStyle } from "../../utils/styles";
 
 const sqDisplayStyle = {
@@ -41,7 +42,9 @@ function Navbar() {
   );
 
   const { isConnected } = useAccount();
-  const { fetchSqAmount } = useSaintQuartz();
+  const { saintQuartzContract } = useContext(NetworkContext);
+  const { fetchSqAmount } = useSaintQuartz(saintQuartzContract);
+  
 
   const handleCloseNavMenu = () => {
     setAnchorElNav(null);

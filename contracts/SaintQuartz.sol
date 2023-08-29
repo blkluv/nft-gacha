@@ -38,12 +38,12 @@ contract SaintQuartz is Initializable, ERC20Upgradeable, ERC20BurnableUpgradeabl
         __UUPSUpgradeable_init();
 
         // define Saint Quartz purchase packages
-        _sqPackages[0] = SaintQuartzPackage(10000000000, 1);
-        _sqPackages[1] = SaintQuartzPackage(40000000000, 5);
-        _sqPackages[2] = SaintQuartzPackage(120000000000, 19);
-        _sqPackages[3] = SaintQuartzPackage(240000000000, 41);
-        _sqPackages[4] = SaintQuartzPackage(400000000000, 77);
-        _sqPackages[5] = SaintQuartzPackage(800000000000, 168);
+        _sqPackages[0] = SaintQuartzPackage(1000000000, 1);
+        _sqPackages[1] = SaintQuartzPackage(4000000000, 5);
+        _sqPackages[2] = SaintQuartzPackage(12000000000, 19);
+        _sqPackages[3] = SaintQuartzPackage(24000000000, 41);
+        _sqPackages[4] = SaintQuartzPackage(40000000000, 77);
+        _sqPackages[5] = SaintQuartzPackage(80000000000, 168);
     }
 
     function getSqPackages() external view returns (SaintQuartzPackage[6] memory) {

@@ -1,12 +1,12 @@
 import { useState, useEffect } from 'react';
 import { JsonRpcProvider } from 'ethers';
-import {SaintQuartz__factory} from "../../typechain/factories/contracts";
+import { SaintQuartz__factory } from "../../typechain/factories/contracts";
 
-const saintQuartzAddress = "0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512";
+const saintQuartzAddress = "0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0";
 const providerUrl = "http://localhost:8545";
 
 export const useNetwork = () => {
-  const [saintQuartzContract, setSaintQuartzContract] = useState(null);
+  const [saintQuartzContract, setSaintQuartzContract] = useState({});
 
   async function connectNetwork() {
     const newProvider = new JsonRpcProvider(providerUrl);
@@ -19,6 +19,6 @@ export const useNetwork = () => {
   }, []);
 
   return {
-    saintQuartzContract
+    saintQuartzContract,
   };
 };
