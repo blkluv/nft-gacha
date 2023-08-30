@@ -8,7 +8,6 @@ import Container from "@mui/material/Container";
 import Button from "@mui/material/Button";
 import AdbIcon from "@mui/icons-material/Adb";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
-import { NetworkContext } from "../../utils/contexts";
 import { useAccount } from "wagmi";
 import { useSaintQuartz } from "../../hooks/useSaintQuartz";
 import { APP_TITLE } from "../../utils/constants";
@@ -36,27 +35,23 @@ const pages = [
 ];
 
 function Navbar() {
-  const [sqAmount, setSqAmount] = useState(0); 
-  const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(
-    null
-  );
+  const [sqAmount, setSqAmount] = useState(0);
+  const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null);
 
   const { isConnected } = useAccount();
-  const { saintQuartzContract } = useContext(NetworkContext);
-  const { fetchSqAmount } = useSaintQuartz(saintQuartzContract);
-  
+  const { fetchSqAmount } = useSaintQuartz();
 
   const handleCloseNavMenu = () => {
     setAnchorElNav(null);
   };
 
   const getSqAmount = async () => {
-        const amount = await fetchSqAmount();
-        setSqAmount(amount!);
-  }
+    const amount = await fetchSqAmount();
+    setSqAmount(amount!);
+  };
 
   useEffect(() => {
-    if(isConnected) {
+    if (isConnected) {
       getSqAmount();
     }
   }, [isConnected, sqAmount]);

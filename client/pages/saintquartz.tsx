@@ -56,7 +56,7 @@ export default function SaintQuartz() {
           Saint Quartz Packages
         </Typography>
         <Box maxWidth="lg" sx={packageBoxStyle}>
-          {packages.map(sqPackage => <SQPackage sqAmount={sqPackage.amount} />)}
+          {packages.map((sqPackage, i) => <SQPackage key={i} sqAmount={sqPackage.amount} />)}
         </Box>
       </Box>
     </Container>
