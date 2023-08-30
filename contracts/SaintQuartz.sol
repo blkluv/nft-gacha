@@ -18,7 +18,7 @@ contract SaintQuartz is Initializable, ERC20Upgradeable, ERC20BurnableUpgradeabl
     event Burn(address indexed _from, uint256 _value);
 
     struct SaintQuartzPackage {
-        // price as USD(ether), denominated as Gwei
+        // price as USD
         uint256 price;
         uint256 amount;
     }
@@ -38,12 +38,12 @@ contract SaintQuartz is Initializable, ERC20Upgradeable, ERC20BurnableUpgradeabl
         __UUPSUpgradeable_init();
 
         // define Saint Quartz purchase packages
-        _sqPackages[0] = SaintQuartzPackage(1000000000, 1);
-        _sqPackages[1] = SaintQuartzPackage(4000000000, 5);
-        _sqPackages[2] = SaintQuartzPackage(12000000000, 19);
-        _sqPackages[3] = SaintQuartzPackage(24000000000, 41);
-        _sqPackages[4] = SaintQuartzPackage(40000000000, 77);
-        _sqPackages[5] = SaintQuartzPackage(80000000000, 168);
+        _sqPackages[0] = SaintQuartzPackage(1, 1);
+        _sqPackages[1] = SaintQuartzPackage(4, 5);
+        _sqPackages[2] = SaintQuartzPackage(12, 19);
+        _sqPackages[3] = SaintQuartzPackage(24, 41);
+        _sqPackages[4] = SaintQuartzPackage(40, 77);
+        _sqPackages[5] = SaintQuartzPackage(80, 168);
     }
 
     function getSqPackages() external view returns (SaintQuartzPackage[6] memory) {

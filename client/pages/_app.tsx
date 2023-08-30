@@ -11,8 +11,6 @@ import { WagmiConfig } from 'wagmi';
 import { useWalletConfig } from "../src/hooks/useWalletConfig";
 import theme from '../src/utils/theme';
 import Layout from './_layout';
-import { NetworkContext } from '../src/utils/contexts';
-import { useNetwork } from '../src/hooks/useNetwork';
 
 export interface MyAppProps extends AppProps {
   emotionCache?: EmotionCache;
@@ -23,7 +21,6 @@ function MyApp(props: MyAppProps) {
   const clientSideEmotionCache = createEmotionCache();
   const { Component, emotionCache = clientSideEmotionCache, pageProps } = props;
   const { chains, wagmiConfig } = useWalletConfig();
-  const network = useNetwork();
 
   return (
     <CacheProvider value={emotionCache}>
@@ -34,11 +31,9 @@ function MyApp(props: MyAppProps) {
         <CssBaseline />
         <WagmiConfig config={wagmiConfig}>
           <RainbowKitProvider modalSize="compact" chains={chains} theme={darkTheme()}>
-            <NetworkContext.Provider value={network}>
-              <Layout>
-                <Component {...pageProps} />
-              </Layout>
-            </NetworkContext.Provider>
+            <Layout>
+              <Component {...pageProps} />
+            </Layout>
           </RainbowKitProvider>
         </WagmiConfig>
       </ThemeProvider>

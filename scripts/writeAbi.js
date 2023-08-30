@@ -12,6 +12,8 @@ async function writeAbi() {
       const data = `export const ${name}Abi = ` + JSON.stringify(abi);
       await fs.writeFile(`./client/src/abis/${name}.abi.js`, data);
     });
+
+    console.log(`Finished writing abi files!`);
   } catch (error) {
     console.error(error);
   }

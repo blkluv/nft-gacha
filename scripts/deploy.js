@@ -5,9 +5,9 @@ async function main() {
   const SaintQuartz = await ethers.getContractFactory("SaintQuartz");
   const saintQuartz = await upgrades.deployProxy(SaintQuartz, {kind: "uups"});
   await saintQuartz.deployed();
-  console.log(`Deployed to proxy: ${saintQuartz.address}`);
+  console.log(`Deployed to proxy contract: ${saintQuartz.address}`);
   const saintQuartzAddress = await upgrades.erc1967.getImplementationAddress(saintQuartz.address);
-  console.log(`Saint Quartz contract deployed to ${saintQuartzAddress}`);
+  console.log(`Implementation address: ${saintQuartzAddress}`);
 
   writeAbi();
 }
