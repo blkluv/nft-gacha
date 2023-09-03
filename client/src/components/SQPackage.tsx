@@ -1,9 +1,12 @@
 import Image from "next/image";
 import { Box, Typography } from "@mui/material";
 import { flexColStyle } from "../utils/styles";
+import { useSaintQuartz } from "../hooks/useSaintQuartz";
+import { Package } from "../utils/types";
 
 interface params {
-  sqAmount: number;
+  index: number;
+  sqPackage: Package;
 }
 
 const boxStyle = {
@@ -13,6 +16,7 @@ const boxStyle = {
   border: "3px solid #34495E",
   borderRadius: 5,
   backgroundColor: "#ECF0F1",
+  cursor: "pointer",
   color: "#34495E",
   "&:hover": {
     backgroundColor: "#2962FF",
@@ -26,9 +30,12 @@ const textStyle = {
   textAlign: "center",
 };
 
-function SQPackage({ sqAmount }: params) {
+function SQPackage({ index, sqPackage }: params) {
+  const { buyPackage } = useSaintQuartz();
+  const { amount, price } = sqPackage;
+
   return (
-    <Box sx={boxStyle}>
+    <Box sx={boxStyle} onClick={() => buyPackage(index, price)}>
       <Image
         src="/images/saintquartz.png"
         width={100}
@@ -36,11 +43,11 @@ function SQPackage({ sqAmount }: params) {
         alt="Saint Quartz"
       />
       <br />
-      <Typography variant="h4" sx={textStyle}>
-        {sqAmount}
-      </Typography>
       <Typography variant="h5" sx={textStyle}>
-        Saint Quartz
+        {price} Gwei
+      </Typography>
+      <Typography variant="h6" sx={textStyle}>
+      {amount} Saint Quartz
       </Typography>
     </Box>
   );

@@ -5,11 +5,7 @@ import Box from "@mui/material/Box";
 import SQPackage from "../src/components/SQPackage";
 import { pageBoxStyle } from "../src/utils/styles";
 import { useSaintQuartz } from "../src/hooks/useSaintQuartz";
-
-interface Package {
-  amount: number;
-  price: number;
-}
+import { Package } from "../src/utils/types";
 
 const pageTitleStyle = {
   fontWeight: "bold",
@@ -56,7 +52,7 @@ export default function SaintQuartz() {
           Saint Quartz Packages
         </Typography>
         <Box maxWidth="lg" sx={packageBoxStyle}>
-          {packages.map((sqPackage, i) => <SQPackage key={i} sqAmount={sqPackage.amount} />)}
+          {packages.map((sqPackage, i) => <SQPackage key={i} index={i} sqPackage={sqPackage} />)}
         </Box>
       </Box>
     </Container>
